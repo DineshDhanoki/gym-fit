@@ -12,7 +12,10 @@ function App() {
   return (
     <main className='min-h-screen flex flex-col bg-gradient-to-r from-slate-800 to-slate-950 text-white text-sm sm:text-base'>
       <Hero />
-      <Generator />
+      <Generator poison={poison} setPoison={setPoison}
+      muscles={muscles} setMuscles={setMuscles}
+      workout={workout} setWorkout={setWorkout}
+      goal={goal} setGoal={setGoal}/>
       {workout && (<Workout workout={workout}/>)}
     </main>
   )

@@ -15,7 +15,8 @@ function Header(props){
     </div>
 )}
 
-export default function Generator() {
+export default function Generator(props) {
+  const {muscles, setMuscles, poison, setPoison, goal, setGoal} = props
 
   const [showModal, setShowModal] = useState(false)
 
