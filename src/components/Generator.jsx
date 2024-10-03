@@ -16,7 +16,7 @@ function Header(props){
 )}
 
 export default function Generator(props) {
-  const {muscles, setMuscles, poison, setPoison, goal, setGoal} = props
+  const {muscles, setMuscles, poison, setPoison, goal, setGoal, updateWorkout} = props
 
   const [showModal, setShowModal] = useState(false)
 
@@ -47,7 +47,7 @@ export default function Generator(props) {
   }
 
   return (
-    <SectionWrapper header={"generate your workout"} title={["IT\'S", "HUGE", "O\'CLOCK"]}>
+    <SectionWrapper id={'generate'} header={"generate your workout"} title={["IT\'S", "HUGE", "O\'CLOCK"]}>
       <Header index={'01'} title={'Pick your Poison'} description={'Select the workout you wish to endure.'} />
       <div className='grid grid-cols-2 sm:grid-cols-4 gap-4'>
       {Object.keys(WORKOUTS).map((type, typeIndex) => {
@@ -65,17 +65,17 @@ export default function Generator(props) {
       <Header index={'02'} title={'Lock on Targets'} description={'Select the muscles judged for annihilation.'} />
       <div className='bg-slate-950 border border-solid border-blue-400 rounded-lg flex flex-col'>
         <button onClick={toggleModal} className='relative p-3 flex items-center justify-center'>
-          <p className='capitalize'>{muscles.length == 0 ? 'Select muscle groups' : muscles.join(' ')}</p>
+          <p className='capitalize'>{muscles.length == 0 ? 'Select muscle groups' : muscles.join('')}</p>
           <i className="fa-solid absolute right-3 top-1/2 -translate-y-1/2 fa-caret-down"></i>
         </button>
-        {showModal &&(
-          <div className='flex flex-col p-3'>
+        {showModal && (
+          <div className='flex flex-col px-3 p-3'>
             {(poison === 'individual' ? WORKOUTS[poison] : Object.keys(WORKOUTS[poison])).map((muscleGroup, muscleGroupIndex) => {
               return (
                 <button onClick={() => {
                   updateMuscles(muscleGroup)
-                }} className={'hover:text-red-600 duration-200' + (muscles.includes(muscleGroup) ? 'text-blue-400' : 'text-blue-600')} key={muscleGroupIndex}>
-                  <p className='uppercase'>{muscleGroup.replaceAll('_'," ")}{muscleGroup}</p>
+                }} key={muscleGroupIndex} className={'hover:text-red-600 duration-200' + (muscles.includes(muscleGroup) ? 'text-blue-400' : '')}>
+                  <p className='uppercase'>{muscleGroup.replaceAll('_',' ')}</p>
                 </button>
               )
             })}
@@ -84,7 +84,7 @@ export default function Generator(props) {
       </div>
 
       <Header index={'03'} title={'Become Juggernaut'} description={'Select your ultimate objective.'} />
-      <div className='grid grid-cols-3 gap-4'>
+      <div className='grid grid-cols-3 sm:grid-cols-3 gap-4'>
       {Object.keys(SCHEMES).map((scheme, schemeIndex) => {
         return (
           <button onClick={() => {
@@ -95,7 +95,7 @@ export default function Generator(props) {
         )
       })}   
       </div>
-      <Button text = {'Formulate'}></Button>
+      <Button func={updateWorkout} text = {'Formulate'}></Button>
     </SectionWrapper>
     
   )
