@@ -11,20 +11,20 @@ export default function HomePage(props) {
 
     const mimeType = 'audio/webm'
 
-    async function startRecording(params) {
+    async function startRecording() {
         let tempStream
         console.log('Start Recording')
         try {
-            const streamData = navigator.mediaDevices.getUserMedia({
+            const streamData = await navigator.mediaDevices.getUserMedia({
                 audio: true,
-                video: false,
+                video: false
             })
             tempStream = streamData
         } catch (error) {
             console.log(error.message)          
             return
         }
-        setRecordingStatus('Recording')
+        setRecordingStatus('recording')
     
 
     // create new media recorder instance using the stream
@@ -42,12 +42,12 @@ export default function HomePage(props) {
     setAudioChunks(localAudioChunks)
     }
 
-    async function stopRecording(params) {
+    async function stopRecording() {
         setRecordingStatus('inactive')
         console.log('Stop Recording')
 
         mediaRecorder.current.stop()
-        mediaRecorder.current.stop = () => {
+        mediaRecorder.current.onstop = () => {
             const audioBlob = new Blob(audioChunks, {type: mimeType})
             setAudioStream(audioBlob)
             setAudioChunks([])
@@ -74,11 +74,12 @@ export default function HomePage(props) {
         <span className='text-blue-400'> &rArr; </span>Translate</h3>
         <button onClick={recordingStatus === 'recording' ? stopRecording : startRecording} className='flex specialBtn px-4 py-2 rounded-xl items-center text-base justify-between gap-4 mx-auto w-72 max-w-full my-4'>
             <p className='text-blue-400'>{recordingStatus === 'inactive' ? 'Record' : `Stop Recording`}</p>
-            <div className='flex items-center gap-2'></div>
+            <div className='flex items-center gap-2'>
             {duration && (
                 <p className='sm'>{duration}s</p>
             )}
-            <i className={"fa-solid duration-200 fa-microphone" + (recordingStatus === 'recording' ? 'text-rose-400' : " ")}></i>
+            <i className={"fa-solid duration-200 fa-microphone" + (recordingStatus === 'recording' ? 'text-rose-400' : "")}></i>
+            </div>
         </button>
         <p className='text-base'>Or <label className='text-blue-600 cursor-pointer hover:text-red-600 duration-200'>upload 
         <input onChange={(e) => {
