@@ -1,34 +1,30 @@
 import { useState } from 'react'
-import Hero from './components/Hero'
-import Generator from './components/Generator'
-import Workout from './components/Workout'
-import { generateWorkout } from './utils/functions'
+import HomePage from './components/HomePage'
+import Header from './components/Header'
+import FileDisplay from './components/FileDisplay'
 
 function App() {
-  const [workout, setWorkout] = useState(null)
-  const [poison, setPoison] = useState('individual')
-  const [muscles, setMuscles] = useState([])
-  const [goal, setGoal] = useState('strength_power')
+  const [file, setFile] = useState(null)
+  const [audioStream, setAudioStream] = useState(null)
 
-  function updateWorkout() {
-    if (muscles.lenght < 1) {
-      return
-    }
-    let newWorkout = generateWorkout({poison, muscles, goal})
-    setWorkout(newWorkout)
-    window.location.href = "#workout"
+  const isAudioAvailable = file || audioStream
+
+  function handleAudioReset () {
+    setFile(null)
+    setAudioStream(null)
   }
 
   return (
-    <main className='min-h-screen flex flex-col bg-gradient-to-r from-slate-800 to-slate-950 text-white text-sm sm:text-base'>
-      <Hero />
-      <Generator poison={poison} setPoison={setPoison}
-      muscles={muscles} setMuscles={setMuscles}
-      workout={workout} setWorkout={setWorkout}
-      goal={goal} setGoal={setGoal}
-      updateWorkout={updateWorkout} />
-      {workout && (<Workout workout={workout}/>)}
-    </main>
+    <div className='flex flex-col max-w-[1000px] mx-auto w-full'>
+      <section className='min-h-screen flex flex-col'>
+        <Header />
+        {isAudioAvailable ? (
+          <FileDisplay handleAudioReset={handleAudioReset} file={file} audioStream={audioStream}/>
+        ) : (<HomePage setFile={setFile} setAudioStream={setAudioStream}/>)}
+      </section>
+    <h1 className='text-red-500'>Hello Diplo</h1>
+    <footer></footer>
+    </div>
   )
 }
 
